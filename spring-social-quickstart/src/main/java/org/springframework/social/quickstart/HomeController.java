@@ -15,37 +15,52 @@
  */
 package org.springframework.social.quickstart;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
+import com.blogspot.kateel.analytics.CommonLikesAnalytic;
+import com.blogspot.kateel.analytics.FriendPair;
+import com.blogspot.kateel.analytics.FriendPairAnalytic;
 import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.Reference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.inject.Inject;
+import java.util.Collection;
+import java.util.Map;
+
 /**
- * Simple little @Controller that invokes Facebook and renders the result.
- * The injected {@link Facebook} reference is configured with the required authorization credentials for the current user behind the scenes.
- * @author Keith Donald
+ * Simple little @Controller that invokes Facebook and renders the result. The injected {@link org.springframework.social.facebook.api.Facebook} reference is configured with the required authorization credentials for the current user behind
+ * the scenes.
+ *
+ * @author original Keith Donald, modified by Matt Lee
  */
 @Controller
 public class HomeController {
 
-	private final Facebook facebook;
-	
-	@Inject
-	public HomeController(Facebook facebook) {
-		this.facebook = facebook;
-	}
+    private final Facebook facebook;
+    private final FriendPairAnalytic friendPairAnalytic = new FriendPairAnalytic();
+    private final CommonLikesAnalytic commonLikesAnalytic = new CommonLikesAnalytic();
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Model model) {
-		List<Reference> friends = facebook.friendOperations().getFriends();
-		model.addAttribute("friends", friends);
-		return "home";
-	}
+    @Inject
+    public HomeController(Facebook facebook) {
+        this.facebook = facebook;
+    }
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String home(Model model) {
+        model.addAttribute("commonLikes", getCommonLikes());
+        model.addAttribute("mostLiked", this.commonLikesAnalytic.getMostLiked());
+        model.addAttribute("likesMost", this.commonLikesAnalytic.getLikesMost());
+        model.addAttribute("likesMostCount", this.commonLikesAnalytic.getLikesMostCount());
+        model.addAttribute("mostLikedCount", this.commonLikesAnalytic.getMostLikedCount());
+        return "home";
+    }
+
+    private Collection<FriendPair> getFriendPairs() {
+        return this.friendPairAnalytic.getFriendPairs(this.facebook);
+    }
+
+    private Map<String, Collection<String>> getCommonLikes() {
+        return this.commonLikesAnalytic.getCommonLikes(this.facebook);
+    }
 }

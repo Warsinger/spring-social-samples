@@ -8,11 +8,11 @@
 	<packaging>war</packaging>
 	<version>1.0.0</version>
 	<properties>
-		<java-version>1.6</java-version>
-		<org.springframework.social-version>1.1.0.BUILD-SNAPSHOT</org.springframework.social-version>
+        <java-version>1.7</java-version>
+        <org.springframework.social-version>1.1.0.BUILD-SNAPSHOT</org.springframework.social-version>
 		<org.springframework.social.facebook-version>1.1.0.BUILD-SNAPSHOT</org.springframework.social.facebook-version>
-		<org.springframework-version>3.2.3.RELEASE</org.springframework-version>
-		<org.springframework.security.crypto-version>3.1.4.RELEASE</org.springframework.security.crypto-version>
+        <org.springframework-version>3.2.5.RELEASE</org.springframework-version>
+        <org.springframework.security.crypto-version>3.1.4.RELEASE</org.springframework.security.crypto-version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -41,7 +41,13 @@
 	        <version>${org.springframework.social.facebook-version}</version>
 	    </dependency>
 		<dependency>
-			<groupId>org.springframework.security</groupId>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-facebook</artifactId>
+            <version>${org.springframework.social.facebook-version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+        <groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-crypto</artifactId>
 			<version>${org.springframework.security.crypto-version}</version>
 		</dependency>
@@ -78,7 +84,12 @@
 			<artifactId>cglib-nodep</artifactId>
 			<version>2.2</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+    </dependencies>
 	<repositories>
 		<repository>
 			<id>org.springframework.maven.release</id>
@@ -113,8 +124,8 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
+                <version>3.1</version>
+                <configuration>
 					<source>${java-version}</source>
 					<target>${java-version}</target>
 				</configuration>
