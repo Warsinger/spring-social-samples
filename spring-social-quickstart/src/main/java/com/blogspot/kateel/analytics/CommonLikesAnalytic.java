@@ -7,6 +7,8 @@ import java.util.*;
 
 /**
  * Finds common likes between me and friends, stores a map of likes to lists of friends who like that also. Additionally find things my friends like in common even if I don't like them
+ *
+ * @author Matt Lee
  */
 public class CommonLikesAnalytic {
     final Logger logger = Logger.getLogger(getClass());
